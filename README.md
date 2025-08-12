@@ -2,7 +2,7 @@
 
 **Note**: This repository is a modified version of [pfeak/docsify-updated]([https://gitee.com/zhengxiangqi/docsify-scroll-to-top](https://github.com/pfeak/docsify-updated)), **not** the official release. 
 **Key changes**: 
-- Added: word count, **Source**: implemented based on code from [https://github.com/project-a](https://github.com/827652549/docsify-count) with modifications.
+- Added: word count, **Source**: implemented based on code from [827652549/docsify-count](https://github.com/827652549/docsify-count) with modifications.
 
 ### Usage
 1. Include the script in index.html:
