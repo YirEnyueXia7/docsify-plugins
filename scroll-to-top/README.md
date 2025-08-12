@@ -14,7 +14,7 @@
   ```
 2. Configure the plugin (optional):
    ```
-   返回顶部
+   // 返回顶部
     scrollToTop: {
         auto: true,  // 是否自动显示/隐藏按钮
         fonts: { text: "Top", size: 16, lineheight: 36, },  // 按钮显示的文本,字号,行高
