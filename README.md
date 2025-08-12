@@ -1,1 +1,1 @@
-# docsify-plugins
+# Customized plugins
