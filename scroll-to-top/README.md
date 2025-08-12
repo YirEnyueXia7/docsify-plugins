@@ -1,6 +1,6 @@
 # docsify-plugins-scroll-to-top
 
-**Note**: This repository is a modified version of [KiKi/docsify-scroll-to-top]([original_project_link](https://gitee.com/zhengxiangqi/docsify-scroll-to-top)), **not** the official release. 
+**Note**: This repository is a modified version of [KiKi/docsify-scroll-to-top](https://gitee.com/zhengxiangqi/docsify-scroll-to-top), **not** the official release. 
 **Key changes**: 
 - Added: Light/dark theme support 
 - Removed: Original theme 
