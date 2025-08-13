@@ -1,4 +1,4 @@
-# docsify-plugins-scroll-to-top
+# docsify-plugins-core-socialist-values
 
 ### Usage
 1. Include the script in index.html:
