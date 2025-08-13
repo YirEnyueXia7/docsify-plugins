@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>test-click</title>
+  <style>
+    .text-animation {
+      position: fixed;
+      pointer-events: none;
+      font-size: 16px;
+      font-weight: 400;
+      animation: float-up 750ms ease-out forwards;
+      text-shadow: 1px 1px 3px hsla(0, 0%, 90%, 0.5);
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+    }
+    @keyframes float-up {
+      0% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-70px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <script>
+    document.addEventListener('click', function (e) {
+      const texts = ['自由', '民主', '和谐', '爱国', '文明', '法治'];
+      const colors = ['#FF2A6D', '#05D9E8', '#D300C5', '#00FECA', '#FFEE00', '#FE00F5'];
+      const randomText = texts[Math.floor(Math.random() * texts.length)];
+      const randomColor = colors[Math.floor(Math.random() * colors.length)];
+      const animElement = document.createElement('div');
+      animElement.className = 'text-animation';
+      animElement.textContent = randomText;
+      animElement.style.color = randomColor;
+      animElement.style.left = e.clientX + 'px';
+      animElement.style.top = e.clientY + 'px';
+      document.body.appendChild(animElement);
+      setTimeout(() => {
+        animElement.remove();
+      }, 2000);
+    });
+  </script>
+</body>
+</html>
