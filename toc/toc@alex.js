@@ -1,3 +1,4 @@
+// docsify-plugin-toc@1.3.2/dist
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
@@ -14,37 +15,44 @@ var __webpack_exports__ = {};
 
 ;// CONCATENATED MODULE: ./src/toc.js
 // To collect headings and then add to the page ToC
+// pageToC整体删改
 function pageToC (headings, path) {
-  let toc = ['<div class="page_toc">']
-  const list = []
-  const ignoreHeaders = window.$docsify.toc.ignoreHeaders || []
-  headings = document.querySelectorAll(`#main ${window.$docsify.toc.target}`)
-
+  let toc = ['<div class="page_toc">'];
+  const list = [];
+  headings = document.querySelectorAll(`#main ${window.$docsify.toc.target}`);
+  // 获取配置的忽略关键词，如果没有配置则使用默认值
+  const ignoreKeywords = window.$docsify.toc.ignoreHeaders || ['<!-- ignore-toc -->'];
   if (headings) {
     headings.forEach(function (heading) {
-      const innerText = heading.innerText
-      const innerHtml = heading.innerHTML
-
-      let needSkip = false
-      if (ignoreHeaders.length > 0) {
-        console.error(innerText)
-        needSkip = ignoreHeaders.some(str => innerText.match(str))
+      const innerHtml = heading.innerHTML;
+      // 检查是否包含任何配置的忽略关键词
+      let needSkip = false;
+      for (const keyword of ignoreKeywords) {
+        if (innerHtml.includes(keyword)) {
+          needSkip = true;
+          break;
+        }
       }
-
-      if (needSkip) return
-
-      const item = generateToC(heading.tagName.replace(/h/gi, ''), innerHtml)
+      if (needSkip) {
+        return; // 跳过这个标题
+      }
+      // 从标题文本中移除所有配置的忽略注释
+      let cleanHtml = innerHtml;
+      for (const keyword of ignoreKeywords) {
+        cleanHtml = cleanHtml.replace(keyword, '');
+      }
+      const item = generateToC(heading.tagName.replace(/h/gi, ''), cleanHtml);
       if (item) {
-        list.push(item)
+        list.push(item);
       }
-    })
+    });
   }
   if (list.length > 0) {
-    toc = toc.concat(list)
-    toc.push('</div>')
-    return toc.join('')
+    toc = toc.concat(list);
+    toc.push('</div>');
+    return toc.join('');
   } else {
-    return ''
+    return '';
   }
 }
 
