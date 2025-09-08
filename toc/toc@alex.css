@@ -1,48 +1,90 @@
 :root {
-  --toc-border-color: #e8e8e8;
+  /* 目录项边框色 */
+  --toc-border-color: var(--toc-scrollbar-track-color);
+  /* 目录滚动条滑块/轨道色 */
+  --toc-scrollbar-thumb-color: rgba(136, 136, 136, 0.4);
+  --toc-scrollbar-track-color: rgba(136, 136, 136, 0.1);
+  /* 激活/悬停状态颜色 */
   --toc-active-color: #42b983;
+  /* 链接基础颜色 */
   --toc-link-base-color: black;
 }
+/* 暗色模式下的变量覆盖 */
 @media (prefers-color-scheme: dark) {
   :root {
-    --toc-border-color: hsla(0, 0%, 53.3%, .1);
+    --toc-border-color: var(--toc-scrollbar-track-color);
+    --toc-scrollbar-thumb-color: rgba(136, 136, 136, 0.4);
+    --toc-scrollbar-track-color: rgba(136, 136, 136, 0.1);
     --toc-active-color: #ea6f5a;
     --toc-link-base-color: #c8c8c8;
   }
 }
+/* == 响应式目录导航样式 == */
+/* [小屏模式] 屏幕宽度 ≤1299px 时生效 */
 @media only screen and (max-width: 1024px) {
+  /* 目录导航容器 */
   aside.toc-nav {
+    /* 默认折叠为45px宽 */
     max-width: 45px;
+    /* ▶ 半透明弱化显示 */
     opacity: 0.6;
+    /* ▶ 强制贴右对齐 */
     right: 0 !important;
+    /* ▶ 清除右侧边距 */
     margin-right: 0 !important;
+    /* ▶ 透明背景作模糊处理防穿透 */
+    /* background: transparent; */
     background: transparent;
+    /* 背景模糊度 */
     backdrop-filter: blur(8px);
+    /* Safari兼容 */
     -webkit-backdrop-filter: blur(8px);
     position: fixed;
   }
+  /* 强调左边框颜色 */
   aside.toc-nav:not(:active):not(:hover) {
+    /* 添加红色左边框 */
     border-left: 2px solid var(--toc-border-color);
   }
+  /* 隐藏状态：仅显示窄条，隐藏文字 */
   aside.toc-nav:not(:active) .page_toc {
+    /* 隐藏内容 */
     visibility: hidden;
+    /* 收缩内容宽度 */
     width: 0;
   }
+  /* 点击激活时展开 */
   aside.toc-nav:active,
   aside.toc-nav:hover {
+    /* px+inherit同时存在可以保持隐藏45px框一直悬浮 */
+    /* 展开最大宽度 */
     max-width: 250px;
+    /* ★ 展开为完整宽度 */
     max-width: inherit;
+    /* ★ 变为不透明 */
     opacity: 0.95;
   }
+  /* 点击激活时显示内容 */
   aside.toc-nav:active .page_toc,
   aside.toc-nav:hover .page_toc {
     visibility: visible;
+    /* 显示内容 */
     width: 100%;
+    /* 恢复内容宽度 */
+  }
+  .sidebar {
+    width: 275px;
+  }
+  .content {
+    left: 225px;
   }
 }
+/* [中屏模式] 屏幕宽度 1025~1920px 时生效 */
 @media only screen and (min-width: 1025px)and (max-width: 1920px) {
   section.content {
+    /* ◉ 压缩正文右侧,预留250px给目录 */
     padding-right: 200px;
+    /* padding-left: 200px; */
   }
   aside.toc-nav {
     max-width: 200px;
@@ -55,9 +97,12 @@
     left: 225px;
   }
 }
+/* [大屏模式] 屏幕宽度 ≥1921px 时生效 */
 @media only screen and (min-width: 1921px) {
   section.content {
+    /* ◉ 压缩正文右侧,预留250px给目录 */
     padding-right: 250px;
+    /* padding-left: 200px; */
   }
   .sidebar {
     width: 300px;
@@ -66,84 +111,163 @@
     left: 250px;
   }
 }
+/* ===== 目录核心样式 ===== */
+/* 固定定位的目录容器 */
 aside.toc-nav {
+  /* ⚓ 固定定位 */
   position: fixed;
+  /* ▼ 距离顶部70px */
   top: 70px;
+  /* ◀ 距离右侧3% */
   right: 2%;
+  /* ⬅ 右侧外边距20 */
   margin-right: 20px;
+  /* ↔ 默认宽度250px */
   width: 250px;
+  /* ▲ 超高堆叠层级 */
   z-index: 999999;
+  /* ⎘ 弹性盒子顶部对齐 */
   align-self: flex-start;
+  /* ⇲ 不伸缩不收缩 */
   flex: 0 0 auto;
+  /* ⇳ 垂直滚动条 */
   overflow-y: auto;
+  /* ⤓ 最大高度70%视口 */
   max-height: 70%;
 }
+/* 空目录状态 */
 aside.toc-nav.nothing {
+  /* ✖ 宽度为0彻底隐藏 */
   width: 0;
 }
+/* ===== 目录项层级样式 ===== */
+/* 目录项容器 */
 .page_toc {
+  /* ◎ 相对定位 */
   position: relative;
+  /* ⇨ 左侧对齐 */
   left: 0;
+  /* ⇕ 上下边距10px */
   margin: 10px 0;
+  /* 无边框 */
   border: none;
+  /* 基础字号 */
   font-size: 1.0em;
 }
+/* 目录标题 */
 .page_toc p.title {
+  /* 清除默认边距 */
   margin: 0;
+  /* 底部内边距5px */
   padding-bottom: 5px;
+  /* 加粗显示 */
   font-weight: 600;
+  /* 放大1.2倍 */
   font-size: 1.2em;
 }
+/* 目录锚点元素悬停时的伪元素样式 */
 .page_toc .anchor:hover:after {
+  /* 清除悬停时可能出现的伪元素内容 */
   content: "";
 }
 @media not all and (max-width: 768px) {
+  /* 所有层级目录项（lv1-lv6）的链接悬停时，内部span元素的样式 */
   .page_toc div[class^="lv"] a:hover span {
+    /* 文字颜色：优先使用CSS变量，变量未定义时使用默认绿色#42b983 */
+    /* color: var(--sidebar-nav-link-color--active, var(--toc-active-color)); */
+    /* color: var(--toc-active-color) !important; */
+    /* 加粗；可根据需要改成 700 或 bold */
     font-weight: 600;
+    /* 保持原有颜色，不额外变色 */
     color: inherit;
   }
 }
+/* 所有目录项通用样式 */
 .page_toc div {
+  /* 左侧装饰竖线 */
   border-left: 2px solid var(--toc-border-color);
+  /* 基础缩进10px */
   text-indent: 10px;
+  /* 上下内边距 */
   padding: 2px 0;
+  /* 手型指针 */
   cursor: pointer;
 }
+/* ===== 交互状态 ===== */
+/* 当前激活状态的目录项样式 */
 .page_toc div.active {
+  /* 左侧边框颜色：优先使用CSS变量，默认绿色#42b983 */
   border-left-color: var(--toc-active-color) !important;
+  /* 边框颜色变化时的过渡动画（0.23秒） */
   transition: border-left-color 0.23s;
 }
+/* 当前激活状态目录项中链接的文字样式 */
 .page_toc div.active a,
 .page_toc div.active a span {
+  /* 文字颜色：优先使用CSS变量，默认绿色#42b983 */
   color: var(--toc-active-color) !important;
+  /* 字体常规（400为normal） */
+  font-weight: 400;
+  /* 文字颜色变化时的过渡动画（0.23秒） */
   transition: color 0.23s;
 }
+/* 所有层级目录项（lv1-lv6）的链接基础样式 */
 .page_toc div[class^="lv"] a {
+  /* 文字颜色：优先使用CSS变量，默认黑色 */
   color: var(--text-color-base, var(--toc-link-base-color));
+  /* 无下划线 */
   text-decoration: none;
+  /* 字体较细（300为轻量级） */
   font-weight: 300;
+  /* 行高为2倍字体大小 */
   line-height: 2em;
+  /* 块级元素（占满整行） */
   display: block;
 }
+/* 所有层级目录项链接内span元素的样式 */
 .page_toc div[class^="lv"] a span {
+  /* 文字颜色：优先使用hover变量，其次用默认链接变量 */
   color: var(--sidebar-nav-link-color--hover, var(--sidebar-nav-link-color));
+  /* 块级元素 */
   display: block;
+  /* 超出部分隐藏 */
   overflow: hidden;
+  /* 不换行 */
   white-space: nowrap;
+  /* 文字溢出时显示省略号（...） */
   text-overflow: ellipsis;
 }
+/* ===== 多级缩进 ===== */
+/* 二级目录缩进20px */
 .page_toc div.lv2 {
   text-indent: 20px;
 }
+/* 三级目录缩进30px */
 .page_toc div.lv3 {
   text-indent: 30px;
 }
+/* 四级目录缩进40px */
 .page_toc div.lv4 {
   text-indent: 40px;
 }
+/* 五级目录缩进50px */
 .page_toc div.lv5 {
   text-indent: 50px;
 }
+/* 六级目录缩进60px */
 .page_toc div.lv6 {
   text-indent: 60px;
+}
+/* 自定义目录滚动条样式 - 与 Docsify 侧边栏保持一致 */
+/* Firefox浏览器滚动条整体样式 */
+aside.toc-nav {
+  /* 使用细滚动条 */
+  scrollbar-width: thin;
+  /* 默认滑块和轨道都透明 */
+  scrollbar-color: transparent transparent;
+}
+/* 鼠标悬停时Firefox浏览器滚动条样式 */
+aside.toc-nav:hover {
+  /* 悬停时显示半透明滑块和轨道 */
+  scrollbar-color: var(--toc-scrollbar-thumb-color) var(--toc-scrollbar-track-color);
 }
